@@ -1,0 +1,17 @@
+- name: Verificando se 7-Zip esta instalado
+  win_reg_stat:
+    path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\7-Zip
+  register: seven_zip_instalado
+  tags: lab,7zip
+
+# - debug: msg="{{ seven_zip_instalado }}"
+#   tags: lab,7zip
+
+- name: Instalar 7zip
+  win_package:
+    path: "{{ srv_suporte_softwares }}/7z1900-x64.exe"
+    product_id: '{}'
+    arguments: /S
+    state: present
+  when: seven_zip_instalado.exists == false
+  tags: lab,7zip

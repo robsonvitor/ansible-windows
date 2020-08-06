@@ -1,0 +1,7 @@
+- name: Instalar Blender
+  win_package:
+    path: '{{ srv_suporte_softwares }}/blender-2.80-windows64.msi'
+    product_id: '{}'
+    state: present
+  ignore_errors: yes
+  tags: lab,blender

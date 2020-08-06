@@ -1,0 +1,17 @@
+---
+# Enderecos de servidores
+ocs_server: http://URL_OCS/ocsinventory
+url_http_softwares: http://URL_SERVIDOR_HTTP/Softwares
+srv_wsus: http://srv-wsus.meudominio
+
+# Servidores NTP
+# servidores_ntp: "pool.ntp.br a.ntp.br b.ntp.br c.ntp.br"
+servidores_ntp: "pool.ntp.br"
+
+# usuário de ingresso no domínio
+usuario_admin_dominio: "Administrador@meudominio"
+senha_admin_dominio: "SENHA_ADMINISTRADOR_DOMINIO"
+
+# Pacotes de instalacao de softwares
+pkg_ocs: "OCS-NG-Windows-Agent-Setup_2.6.exe"
+pkg_ocs_ver: "2.6.0.0"

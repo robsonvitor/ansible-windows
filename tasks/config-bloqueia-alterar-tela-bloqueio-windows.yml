@@ -1,0 +1,14 @@
+- name: Verificando se a chave existe
+  win_reg_stat:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\Personalization\NoChangingLockScreen
+  register: existe_chave
+  tags: lab,tela_bloqueio
+
+- name: Cria chave no registro do windows
+  win_regedit:
+    path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\ActiveDesktop
+    name: NoChangingLockScreen
+    data: 1
+    type: dword
+  when: not existe_chave.exists
+  tags: lab,tela_bloqueio

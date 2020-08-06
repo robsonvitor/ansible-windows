@@ -1,0 +1,7 @@
+- name: Cria chave dontdisplaylastusername no registro do windows
+  win_regedit:
+    path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
+    name: dontdisplaylastusername
+    data: 1
+    type: dword
+  tags: lab,ultimo_login_windows

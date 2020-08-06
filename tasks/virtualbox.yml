@@ -1,0 +1,41 @@
+- name: Verificando se VirtualBox 5.2.22 esta instalado
+  win_reg_stat:
+    path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{85307853-1C18-4D00-AA0B-B561502BD7C0}
+  register: virtualbox_instalado
+  tags: lab,virtualbox
+
+# - debug:
+#     var: virtualbox_instalado
+#   tags: virtualbox,debug
+
+# - debug:
+#     var: virtualbox_instalado.properties.DisplayVersion.value
+#   tags: virtualbox,debug
+
+- name: Download VirtualBox-5.2.22-126460-Win.exe
+  win_get_url:
+    force: no
+    url: '{{ url_http_softwares }}/VirtualBox-5.2.22-126460-Win.exe'
+    dest: C:\Temp\VirtualBox-5.2.22-126460-Win.exe
+  when: not virtualbox_instalado.exists or virtualbox_instalado.properties.DisplayVersion.value != "5.2.22"
+  tags: lab,virtualbox
+
+- name: Instalar VirtualBox 5.2.22
+  win_shell: C:\Temp\VirtualBox-5.2.22-126460-Win.exe --silent
+  when: not virtualbox_instalado.exists or virtualbox_instalado.properties.DisplayVersion.value != "5.2.22"
+  ignore_errors: yes
+  tags: lab,virtualbox
+
+- name: Download Oracle_VM_VirtualBox_Extension_Pack-5.2.22.vbox-extpack
+  win_get_url:
+    url: '{{ url_http_softwares }}/Oracle_VM_VirtualBox_Extension_Pack-5.2.22.vbox-extpack'
+    dest: C:\Temp\Oracle_VM_VirtualBox_Extension_Pack-5.2.22.vbox-extpack
+  tags: lab,virtualbox
+
+- name: Instala a extensão Oracle_VM_VirtualBox_Extension_Pack-5.2.22.vbox-extpack
+  win_shell: '"C:\Program Files\Oracle\VirtualBox\VBoxManage" extpack install --replace C:/Temp/Oracle_VM_VirtualBox_Extension_Pack-5.2.22.vbox-extpack --accept-license=56be48f923303c8cababb0bb4c478284b688ed23f16d775d729b89a2e8e5f9eb 2>&1'
+  when: virtualbox_instalado.exists and virtualbox_instalado.properties.DisplayVersion.value == "5.2.22"
+  args:
+    executable: cmd.exe
+  ignore_errors: yes
+  tags: lab,virtualbox

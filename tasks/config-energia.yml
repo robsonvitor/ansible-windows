@@ -1,0 +1,6 @@
+- name: Alterar plano de energia para economia
+  win_power_plan:
+    # name: Economia de energia
+    # name: Equilibrado
+    name: Alto desempenho
+  tags: lab,energia

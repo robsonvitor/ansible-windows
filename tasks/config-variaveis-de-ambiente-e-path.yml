@@ -1,0 +1,21 @@
+- name: Variaveis de ambiente
+  win_environment:
+    state: present
+    name: '{{ item.variavel }}'
+    value: '{{ item.valor }}'
+    level: machine
+  with_items:
+  - { variavel: JAVA_HOME, valor: "C:\\Program\ Files\\Java\\jdk1.7.0_80" }
+  - { variavel: ANDROID_HOME, valor: "C:\\Softwares\\android-studio-sdk" }
+  - { variavel: ANDROID_SDK_ROOT, valor: "C:\\Softwares\\android-intellij-sdk" }
+  tags: lab,ambiente
+
+- name: Atualizando o PATH do Sistema Operacional
+  win_path:
+    elements:
+      - '%ANDROID_HOME%\tools'
+      - '%ANDROID_SDK_ROOT%\tools'
+      - '%ANDROID_HOME%\tools\bin'
+      - '%ANDROID_HOME%\platform-tools'
+      - '%ProgramFiles%\Oracle\VirtualBox'
+  tags: lab,ambiente

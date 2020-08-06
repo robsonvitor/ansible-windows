@@ -1,0 +1,31 @@
+- name: Verificando se weka esta instalado
+  win_stat:
+    path: C:\\Softwares\weka\uninstall.exe
+  register: weka_instalado
+  tags: lab,weka
+
+- name: Instalar weka
+  win_package:
+    path: "{{ url_http_softwares }}/weka-3-8-3-x64.exe"
+    product_id: '{}'
+    arguments: /S /NCRC /D=C:\Softwares\weka
+    state: present
+  register: weka_instalado_agora
+  when: not weka_instalado.stat.exists
+  tags: lab,weka
+
+- name: Verificando se tem o icone do weka o desktop
+  win_stat:
+    path: C:\\Users\Public\Desktop\Weka.lnk
+  register: weka_icone
+  tags: lab,weka
+
+- name: Criar icone no desktop
+  win_shortcut:
+    src: C:\Softwares\weka\RunWeka.bat
+    args: default
+    directory: 'C:\Softwares\weka'
+    dest: C:\Users\Public\Desktop\Weka.lnk
+    icon: C:\Softwares\weka\weka.ico
+  when: not weka_icone.stat.exists
+  tags: lab,weka

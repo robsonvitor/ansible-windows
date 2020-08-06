@@ -1,0 +1,9 @@
+- name: Removendo apps da microsoft
+  # win_shell: "get-appxpackage *'{{ item }}'* | remove-appxpackage"
+  win_shell: Get-AppxPackage Microsoft.XboxGameCallableUI | Remove-AppPackage
+  # win_shell: Get-AppxPackage -allusers | Remove-AppxPackage
+  # with_items:
+  # - 3dbuilder
+  # - alarms
+  # - xbox
+  tags: lab,apps

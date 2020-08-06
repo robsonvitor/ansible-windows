@@ -1,0 +1,21 @@
+# Verificar se esta instalado
+- name: Verificando se Firefox esta instalado
+  win_reg_stat:
+    path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\MozillaMaintenanceService\
+  register: firefox_instalado
+  tags: lab,firefox
+
+# - debug: msg="{{ firefox_instalado }}"
+#   tags: lab,firefox
+
+# - debug: msg="{{ firefox_instalado.properties.DisplayVersion.value }}"
+#   tags: lab,firefox
+
+- name: Instalar Firefox
+  win_package:
+    path: "{{ url_http_softwares }}/Firefox-Latest.msi"
+    product_id: '{}'
+    arguments: /quiet
+    state: present
+  when: not firefox_instalado.exists or firefox_instalado.properties.DisplayVersion.value|float != 71.0
+  tags: lab,firefox

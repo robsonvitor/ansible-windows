@@ -1,0 +1,31 @@
+- name: Verificando se o arquivo existe no destino
+  win_stat:
+    path: C:\Windows\Fonts\monotype-corsiva.ttf
+  register: fonte
+  tags: lab,fonte_windows_monotype_corsiva
+
+- name: Verificando se a chave existe
+  win_reg_stat:
+    path: HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts\Monotype Corsiva
+  register: fonte_reg
+  tags: lab,fonte_windows_monotype_corsiva
+
+# - debug: msg="{{ fonte_reg }}"
+#   tags: fonte_windows_monotype_corsiva
+
+- name: Instalação de Fontes para Windows
+  win_get_url:
+    url: '{{ url_http_softwares}}/Fontes/monotype-corsiva.ttf'
+    dest: C:\Windows\Fonts\monotype-corsiva.ttf
+  when: not fonte.stat.exists
+  tags: lab,fonte_windows_monotype_corsiva
+
+- name: Criação de registro para a fonte
+  win_regedit:
+    path: HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts
+    name: Monotype Corsiva
+    data: monotype-corsiva.ttf
+    type: string
+    state: present
+  when: not fonte_reg.exists
+  tags: lab,fonte_windows_monotype_corsiva

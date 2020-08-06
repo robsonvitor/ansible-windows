@@ -1,0 +1,15 @@
+# Verificar se esta instalado
+- name: Verificando se Dev-C++ esta instalado
+  win_reg_stat:
+    path: HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Dev-C++
+  register: devcpp_instalado
+  tags: lab,devcpp
+
+- name: Instalar DevC++
+  win_package:
+    path: "{{ srv_suporte_softwares }}/DevCpp_5_11.exe"
+    product_id: '{}'
+    arguments: /S
+    state: present
+  when: (devcpp_instalado.exists == False) or (FORCE is defined) or (devcpp_instalado.properties.DisplayVersion.value != "5.11")
+  tags: lab,devcpp

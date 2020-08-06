@@ -1,0 +1,42 @@
+- name: Configuração de firewall do Windows
+  block:
+    - name: Regra de firewall para WinRM HTTPS
+      win_firewall_rule:
+        name: Windows Remote Management (HTTPS)
+        localport: 5986
+        action: allow
+        direction: in
+        protocol: tcp
+        state: present
+        enabled: yes
+
+    - name: Regra de firewall para WinRM HTTP
+      win_firewall_rule:
+        name: Windows Remote Management (HTTP)
+        localport: 5985
+        action: allow
+        direction: in
+        protocol: tcp
+        state: present
+        enabled: yes
+        
+    - name: Regra de firewall para VNC
+      win_firewall_rule:
+        name: VNC
+        localport: 5900
+        action: allow
+        direction: in
+        protocol: tcp
+        state: present
+        enabled: yes
+
+    - name: Regra de firewall para permitir solicitações ICMPv4
+      win_firewall_rule:
+        name: Permitir ICMPv4
+        enabled: yes
+        state: present
+        profiles: private,public
+        action: allow
+        direction: in
+        protocol: icmpv4
+  tags: lab,firewall

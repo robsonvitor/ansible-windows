@@ -1,0 +1,61 @@
+# https://www.tenforums.com/tutorials/9108-enable-disable-sign-screen-background-image-windows-10-a.html
+# HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\System
+
+# DisableLogonBackgroundImage DWORD
+
+# 0 or delete = enable
+# 1 = disable
+
+- name: Verificando se a chave NoChangingWallPaper existe
+  win_reg_stat:
+    path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\ActiveDesktop\NoChangingWallPaper
+  register: existe_chave_NoChangingWallPaper
+  tags: lab,estetica_windows
+
+- name: Cria chave NoChangingWallPaper no registro do windows
+  win_regedit:
+    path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\ActiveDesktop
+    name: NoChangingWallPaper
+    data: 1
+    type: dword
+  when: not existe_chave_NoChangingWallPaper.exists
+  tags: lab,estetica_windows
+
+- name: Verificando se a chave NoChangingLockScreen existe
+  win_reg_stat:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\Personalization\NoChangingLockScreen
+  register: existe_chave_NoChangingLockScreen
+  tags: lab,estetica_windows
+
+- name: Cria chave NoChangingLockScreen no registro do windows
+  win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\Personalization
+    name: NoChangingLockScreen
+    data: 1
+    type: dword
+  # when: not existe_chave.exists
+  tags: lab,estetica_windows
+
+- name: Cria chave NoLockScreen no registro do windows
+  win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\Personalization
+    name: NoLockScreen
+    data: 1
+    type: dword
+  # when: not existe_chave.exists
+  tags: lab,estetica_windows
+
+- name: Verificando se a chave DisableLogonBackgroundImage existe
+  win_reg_stat:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\System\DisableLogonBackgroundImage
+  register: existe_chave_DisableLogonBackgroundImage
+  tags: lab,estetica_windows
+
+- name: Cria chave DisableLogonBackgroundImage no registro do windows
+  win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\System
+    name: DisableLogonBackgroundImage
+    data: 1
+    type: dword
+  # when: not existe_chave.exists
+  tags: lab,estetica_windows

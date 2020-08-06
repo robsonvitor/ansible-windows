@@ -1,0 +1,20 @@
+- name: Download
+  win_get_url:
+    # url: https://github.com/Sycnex/Windows10Debloater/archive/master.zip
+    url: '{{ url_http_softwares}}/Softwares/WindowsDebloat.zip'
+    dest: C:\Temp\Windows10Debloater.zip
+    force: True
+  tags: lab,debloat
+
+
+- name: Descompactar
+  win_unzip:
+    src: C:\Temp\Windows10Debloater.zip
+    dest: C:\Temp\
+    creates: C:\Temp\Windows10Debloater
+    removed: true
+  tags: lab,debloat
+
+- name: Executando -> Windows10SysPrepDebloater.ps1 -Sysprep -Debloat -Privacy
+  win_shell: C:\Temp\Windows10Debloater-master\Windows10SysPrepDebloater.ps1 -Sysprep -Debloat -Privacy >> C:\Temp\log.txt
+  tags: lab,debloat

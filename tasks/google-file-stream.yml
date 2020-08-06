@@ -1,0 +1,15 @@
+- name: Verificando se Google File Stream esta instalado
+  win_reg_stat:
+    path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{6BBAE539-2232-434A-A4E5-9A33560C6283}
+  register: googlefs_instalado
+  tags: labgooglefs
+
+- name: Instalar Google File Stream
+  win_package:
+    path: '{{ url_http_softwares_softwares }}/GoogleDriveFSSetup.exe'
+    product_id: '{}'
+    arguments: --silent --desktop_shortcut
+    state: present
+  ignore_errors: yes
+  when: not googlefs_instalado.exists
+  tags: labgooglefs

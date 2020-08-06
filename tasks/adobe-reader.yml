@@ -1,0 +1,15 @@
+- name: Verificando se Adobe Reader esta instalado
+  win_reg_stat:
+    path: HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\{AC76BA86-7AD7-1046-7B44-AC0F074E4100}
+  register: adobereader_instalado
+  tags: lab,adobereader
+
+- name: Instalar Adobe Reader
+  win_package:
+    path: "{{ srv_suporte_softwares }}/AdobeReader_ptBR.exe"
+    product_id: '{}'
+    arguments: /msi EULA_ACCEPT=YES /qn
+    state: present
+  ignore_errors: yes
+  when: (adobereader_instalado.exists == false) or (adobereader_instalado.properties.VersionMajor.raw_value|int < 19)
+  tags: lab,adobereader

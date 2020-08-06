@@ -1,0 +1,10 @@
+- name: Criar usuário Suporte
+  win_user:
+    name: Suporte
+    password: "{{ senha_usuario_suporte }}"
+    update_password: always
+    password_never_expires: yes
+    state: present
+    groups:
+      - Administradores
+  tags: lab,usuario_suporte

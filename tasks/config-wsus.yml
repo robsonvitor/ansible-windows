@@ -1,0 +1,213 @@
+- name: Configura WSUS
+  block:
+    - name: Configurando WSUS - WUServer
+      win_regedit:
+        path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate
+        name: WUServer
+        data: http://srv-wsus.meudominio:8530
+        type: string
+        state: present
+
+    - name: Configurando WSUS - WUStatusServer
+      win_regedit:
+        path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate
+        name: WUStatusServer
+        data: http://srv-wsus.meudominio:8530
+        type: string
+        state: present
+      
+    - name: Configurando WSUS - UpdateServiceUrlAlternate
+      win_regedit:
+        path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate
+        name: UpdateServiceUrlAlternate
+        data: http://srv-wsus.meudominio:8530
+        type: string
+        state: present
+      
+    - name: Configurando WSUS - DoNotConnectToWindowsUpdateInternetLocations
+      win_regedit:
+        path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate
+        name: DoNotConnectToWindowsUpdateInternetLocations
+        data: 00000000
+        type: dword
+        state: present
+      
+    - name: Configurando WSUS - NoAutoUpdate
+      win_regedit:
+        path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU
+        name: NoAutoUpdate
+        data: 00000000
+        type: dword
+        state: present
+      
+    - name: Configurando WSUS - AUOptions
+      win_regedit:
+        path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU
+        name: AUOptions
+        data: 00000004
+        type: dword
+        state: present
+      
+    - name: Configurando WSUS - AutomaticMaintenanceEnabled
+      win_regedit:
+        path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU
+        name: AutomaticMaintenanceEnabled
+        data: 00000001
+        type: dword
+        state: present
+      
+    - name: Configurando WSUS - ScheduledInstallDay
+      win_regedit:
+        path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU
+        name: ScheduledInstallDay
+        data: 00000000
+        type: dword
+        state: present
+      
+    - name: Configurando WSUS - ScheduledInstallTime
+      win_regedit:
+        path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU
+        name: ScheduledInstallTime
+        data: 00000009
+        type: dword
+        state: present
+      
+    - name: Configurando WSUS - ScheduledInstallEveryWeek
+      win_regedit:
+        path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU
+        name: ScheduledInstallEveryWeek
+        data: 00000001
+        type: dword
+        state: present
+      
+    - name: Configurando WSUS - UseWUServer
+      win_regedit:
+        path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU
+        name: UseWUServer
+        data: 00000001
+        type: dword
+        state: present
+      
+    - name: Configurando WSUS - NoAUShutdownOption
+      win_regedit:
+        path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU
+        name: NoAUShutdownOption
+        data: 00000001
+        type: dword
+        state: present
+
+    - name: Configurando WSUS - NoAUAsDefaultShutdownOption
+      win_regedit:
+        path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU
+        name: NoAUAsDefaultShutdownOption
+        data: 00000001
+        type: dword
+        state: present
+  tags: lab,wsus
+
+- name: Remove WSUS
+  block:
+    - name: Configurando WSUS - WUServer
+      win_regedit:
+        path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate
+        name: WUServer
+        data: http://srv-wsus.meudominio:8530
+        type: string
+        state: absent
+
+    - name: Configurando WSUS - WUStatusServer
+      win_regedit:
+        path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate
+        name: WUStatusServer
+        data: http://srv-wsus.meudominio:8530
+        type: string
+        state: absent
+
+    - name: Configurando WSUS - UpdateServiceUrlAlternate
+      win_regedit:
+        path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate
+        name: UpdateServiceUrlAlternate
+        data: http://srv-wsus.meudominio:8530
+        type: string
+        state: absent
+
+    - name: Configurando WSUS - DoNotConnectToWindowsUpdateInternetLocations
+      win_regedit:
+        path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate
+        name: DoNotConnectToWindowsUpdateInternetLocations
+        data: 00000000
+        type: dword
+        state: absent
+
+    - name: Configurando WSUS - NoAutoUpdate
+      win_regedit:
+        path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU
+        name: NoAutoUpdate
+        data: 00000000
+        type: dword
+        state: absent
+
+    - name: Configurando WSUS - AUOptions
+      win_regedit:
+        path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU
+        name: AUOptions
+        data: 00000004
+        type: dword
+        state: absent
+
+    - name: Configurando WSUS - AutomaticMaintenanceEnabled
+      win_regedit:
+        path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU
+        name: AutomaticMaintenanceEnabled
+        data: 00000001
+        type: dword
+        state: absent
+
+    - name: Configurando WSUS - ScheduledInstallDay
+      win_regedit:
+        path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU
+        name: ScheduledInstallDay
+        data: 00000000
+        type: dword
+        state: absent
+
+    - name: Configurando WSUS - ScheduledInstallTime
+      win_regedit:
+        path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU
+        name: ScheduledInstallTime
+        data: 00000009
+        type: dword
+        state: absent
+
+    - name: Configurando WSUS - ScheduledInstallEveryWeek
+      win_regedit:
+        path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU
+        name: ScheduledInstallEveryWeek
+        data: 00000001
+        type: dword
+        state: absent
+
+    - name: Configurando WSUS - UseWUServer
+      win_regedit:
+        path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU
+        name: UseWUServer
+        data: 00000001
+        type: dword
+        state: absent
+
+    - name: Configurando WSUS - NoAUShutdownOption
+      win_regedit:
+        path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU
+        name: NoAUShutdownOption
+        data: 00000001
+        type: dword
+        state: absent
+
+    - name: Configurando WSUS - NoAUAsDefaultShutdownOption
+      win_regedit:
+        path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU
+        name: NoAUAsDefaultShutdownOption
+        data: 00000001
+        type: dword
+        state: absent
+  tags: wsus_remove

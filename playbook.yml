@@ -1,0 +1,74 @@
+---
+# Executa esse grupo somente para os hosts em hosts_online    
+- name: Playbook Desktops Windows
+  hosts: all
+  gather_facts: no
+  vars_files:
+    - vars.yml      
+  tasks:
+    - debug:
+        var: ansible_user,ansible_password
+      tags: always
+
+    - name: Verifica se o host está online
+      win_ping: "{{ inventory_hostname }}"
+      register: online
+      ignore_errors: yes
+      tags: always
+    
+    - name: Insere todas tarefas
+      block:      
+        # Configurações Windows
+        - import_tasks: tasks/config-variaveis-de-ambiente-e-path.yml
+        - import_tasks: tasks/config-etc-hosts.yml
+        - import_tasks: tasks/config-regras-firewall.yml
+        - import_tasks: tasks/config-wsus.yml
+        - import_tasks: tasks/config-desabilitar-ultimo-login-windows.yml
+        - import_tasks: tasks/config-bloqueia-alterar-papel-parede-windows.yml
+        - import_tasks: tasks/config-desabilitar-estetica-windows.yml
+        - import_tasks: tasks/config-bloqueia-windows-store.yml
+        - import_tasks: tasks/config-variaveis-de-ambiente-disco.yml
+        - import_tasks: tasks/config-ntp.yml
+        - import_tasks: tasks/config-energia.yml
+        - import_tasks: tasks/config-win-msg.yml
+        - import_tasks: tasks/config-win-matar-chrome.yml
+        - import_tasks: tasks/diretorios.yml
+        - import_tasks: tasks/diversos.yml
+        - import_tasks: tasks/fontes-windows-libras2012.yml
+        - import_tasks: tasks/fontes-windows-monotype-corsiva.yml
+        - import_tasks: tasks/bginfo.yml
+        - import_tasks: tasks/ingressar-dominio.yml
+        - import_tasks: tasks/usuarios.yml
+        - import_tasks: tasks/copiar-arquivo.yml
+        - import_tasks: tasks/windows-debloat.yml
+
+        # Softwares comum a todos
+        - import_tasks: tasks/adobe-reader.yml
+        - import_tasks: tasks/vnc.yml
+        - import_tasks: tasks/libreoffice.yml
+        - import_tasks: tasks/google-file-stream.yml
+        - import_tasks: tasks/ocsinventory.yml
+        - import_tasks: tasks/google-chrome.yml
+        - import_tasks: tasks/firefox.yml
+        - import_tasks: tasks/vlc.yml
+        - import_tasks: tasks/7zip.yml
+        - import_tasks: tasks/nextcloud.yml
+
+        # Softwares laboratórios e BIBGER
+        - import_tasks: tasks/blender.yml
+        - import_tasks: tasks/virtualbox.yml
+        - import_tasks: tasks/devcpp.yml
+        - import_tasks: tasks/openproj.yml
+        - import_tasks: tasks/plano-de-negocio-sebrae.yml
+        - import_tasks: tasks/wireshark.yml
+        - import_tasks: tasks/mysql-workbench.yml
+        - import_tasks: tasks/jdk8.yml
+        - import_tasks: tasks/jre8_i586.yml
+        - import_tasks: tasks/jre8.yml
+        - import_tasks: tasks/ireport.yml
+        - import_tasks: tasks/wamp.yml
+        - import_tasks: tasks/netbeans.yml
+        - import_tasks: tasks/weka.yml
+        - import_tasks: tasks/scratch.yml
+        - import_tasks: tasks/portugol.yml
+      when: online.ping == "pong"

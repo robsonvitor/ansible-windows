@@ -1,0 +1,178 @@
+- name: Bibliotecas para correto funcionamento
+  become: yes
+  become_method: runas
+  become_user: System
+  block:
+    
+    # - name: Esta instalado?
+    #   win_reg_stat:
+    #     path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{8220EEFE-38CD-377E-8595-13398D740ACE}
+    #   register: 
+ 
+    - name: Instalando Bibliotecas Windows - vcredist_2008_sp1_atl_x64.exe
+      win_package:
+        path: "{{ url_http_softwares }}/wamp/vcredist/vcredist_2008_sp1_atl_x64.exe"
+        product_id: '{}'
+        arguments:  '/q'
+        state: present
+      ignore_errors: yes
+
+    - name: Instalando Bibliotecas Windows - vcredist_2008_sp1_atl_x86.exe
+      win_package:
+        path: "{{ url_http_softwares }}/wamp/vcredist/vcredist_2008_sp1_atl_x86.exe"
+        product_id: '{}'
+        arguments:  '/q'
+        state: present
+      ignore_errors: yes
+
+    - name: Instalando Bibliotecas Windows - vcredist_2008_sp1_mfc_x64.exe
+      win_package:
+        path: "{{ url_http_softwares }}/wamp/vcredist/vcredist_2008_sp1_mfc_x64.exe"
+        product_id: '{}'
+        arguments:  '/q'
+        state: present
+      ignore_errors: yes
+
+    - name: Instalando Bibliotecas Windows - vcredist_2008_sp1_mfc_x86.exe
+      win_package:
+        path: "{{ url_http_softwares }}/wamp/vcredist/vcredist_2008_sp1_mfc_x86.exe"
+        product_id: '{}'
+        arguments:  '/q'
+        state: present
+      ignore_errors: yes
+
+    - name: Instalando Bibliotecas Windows - vcredist_2008_sp1_x64.exe
+      win_package:
+        path: "{{ url_http_softwares }}/wamp/vcredist/vcredist_2008_sp1_x64.exe"
+        product_id: '{}'
+        arguments:  '/q'
+        state: present
+      ignore_errors: yes
+
+    - name: Instalando Bibliotecas Windows - vcredist_2008_sp1_x86.exe
+      win_package:
+        path: "{{ url_http_softwares }}/wamp/vcredist/vcredist_2008_sp1_x86.exe"
+        product_id: '{}'
+        arguments:  '/q'
+        state: present
+      ignore_errors: yes
+
+    - name: Instalando Bibliotecas Windows - vcredist_2010_sp1_x64.exe
+      win_package:
+        path: "{{ url_http_softwares }}/wamp/vcredist/vcredist_2010_sp1_x64.exe"
+        product_id: '{}'
+        arguments:  '/q'
+        state: present
+      ignore_errors: yes
+
+    - name: Instalando Bibliotecas Windows - vcredist_2010_sp1_x86.exe
+      win_package:
+        path: "{{ url_http_softwares }}/wamp/vcredist/vcredist_2010_sp1_x86.exe"
+        product_id: '{}'
+        arguments:  '/q'
+        state: present
+      ignore_errors: yes
+
+    - name: Instalando Bibliotecas Windows - vcredist_2012_upd4_x86.exe
+      win_package:
+        path: "{{ url_http_softwares }}/wamp/vcredist/vcredist_2012_upd4_x86.exe"
+        product_id: '{}'
+        arguments:  '/q'
+        state: present
+      ignore_errors: yes
+
+    - name: Instalando Bibliotecas Windows - vcredist_2013_upd5_x64.exe
+      win_package:
+        path: "{{ url_http_softwares }}/wamp/vcredist/vcredist_2013_upd5_x64.exe"
+        product_id: '{}'
+        arguments:  '/q'
+        state: present
+      ignore_errors: yes
+
+    - name: Instalando Bibliotecas Windows - vcredist_2013_upd5_x86.exe
+      win_package:
+        path: "{{ url_http_softwares }}/wamp/vcredist/vcredist_2013_upd5_x86.exe"
+        product_id: '{}'
+        arguments:  '/q'
+        state: present
+      ignore_errors: yes
+
+    - name: Instalando Bibliotecas Windows - vcredist_2019_x64.exe
+      win_package:
+        path: "{{ url_http_softwares }}/wamp/vcredist/vcredist_2019_x64.exe"
+        product_id: '{}'
+        arguments:  '/q'
+        state: present
+      ignore_errors: yes
+
+    - name: Instalando Bibliotecas Windows - vcredist_2019_x86.exe
+      win_package:
+        path: "{{ url_http_softwares }}/wamp/vcredist/vcredist_2019_x86.exe"
+        product_id: '{}'
+        arguments:  '/q'
+        state: present
+      ignore_errors: yes
+  tags: lab,wamp,bibliotecas
+
+# - debug:
+#     var: bibliotecas
+#   tags: lab,wamp
+
+- name: Reiniciar a máquina após instalar as bibliotecas
+  win_reboot:
+    reboot_timeout: 3600
+
+- name: Verificando se wamp esta instalado
+  win_reg_stat:
+    path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{wampserver64}_is1
+  register: wamp_instalado
+  tags: lab,wamp
+
+- debug:
+    var: wamp_instalado
+  tags: lab,wamp
+
+# - name: Desinstalar wampserver
+#   win_command: 'c:\wamp64\unins000.exe /SILENT'
+#   tags: wamp,wamp_desinstalar
+
+- name: Instalar wampserver
+  win_package:
+    path: "{{ url_http_softwares }}/wamp/wampserver3.1.9_x64.exe"
+    product_id: '{}'
+    arguments: /verysilent
+    state: present
+  register: wamp_instalado_agora
+  when: not wamp_instalado.exists
+  tags: lab,wamp
+
+- name: Verificando se o serviço wampmysqld64 existe
+  win_service:
+    name: wampmysqld64
+  register: info_wampmysqld64
+  tags: lab,wamp,wamp_mysql
+
+- name: Verificando se o serviço wampapache64 existe
+  win_service:
+    name: wampapache64
+  register: info_wampapache64
+  tags: lab,wamp,wamp_apache
+
+# - debug: msg="{{ info_wampmysqld64 }}"
+#   tags: lab,wamp,wamp_mysql
+
+- name: Iniciar wampmysqld64
+  win_service:
+    name: wampmysqld64
+    start_mode: auto
+    state: started
+  when: info_wampmysqld64.exists
+  tags: lab,wamp,wamp_mysql
+
+- name: Iniciar wampapache64
+  win_service:
+    name: wampapache64
+    start_mode: auto
+    state: started
+  when: info_wampapache64.exists
+  tags: lab,wamp,wamp_apache

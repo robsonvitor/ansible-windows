@@ -1,0 +1,15 @@
+# - name: Verificando se OpenProj 1.4 esta instalado
+#   win_reg_stat:
+#     path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{2BFE5B65-10C1-4F6A-A961-3F3C8C9E45FF}
+#   register: openproj_instalado
+#   tags: openproj
+
+- name: Instalar OpenProj
+  win_package:
+    path: '{{ srv_suporte_softwares }}/openproj-1.4.msi'
+    product_id: '{2BFE5B65-10C1-4F6A-A961-3F3C8C9E45FF}'
+    arguments: /quiet
+    state: present
+  ignore_errors: yes
+  # when: not openproj_instalado.exists
+  tags: lab,openproj

@@ -1,0 +1,3 @@
+- name: Verificando se o host esta online
+  win_ping:
+  tags: ping_windows

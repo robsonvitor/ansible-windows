@@ -1,0 +1,15 @@
+- name: Verificando se Libreoffice esta instalado
+  win_reg_stat:
+    path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{9FEFBA80-8687-4AC1-83F7-3CD3E9BAF275}
+  register: libreoffice_instalado
+  tags: lab,libreoffice
+
+- name: Instalar Libreoffice
+  win_package:
+    path: "{{ url_http_softwares }}/LibreOffice_6.3.5_Win_x64.msi"    
+    product_id: '{9FEFBA80-8687-4AC1-83F7-3CD3E9BAF275}'
+    arguments: /qn /norestart ALLUSERS=1 CREATEDESKTOPLINK=1 REGISTER_ALL_MSO_TYPES=1 REGISTER_NO_MSO_TYPES=0 ISCHECKFORPRODUCTUPDATES=0 QUICKSTART=1 ADDLOCAL=ALL UI_LANGS=pt_BR /l "C:\libreoffice.log"
+    state: present
+  ignore_errors: yes
+  when: libreoffice_instalado.exists == false
+  tags: lab,libreoffice

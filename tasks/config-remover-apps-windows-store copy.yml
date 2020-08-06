@@ -1,0 +1,6 @@
+- name: Executando -> Windows10SysPrepDebloater.ps1 -Sysprep -Debloat -Privacy
+  win_shell: 
+  with_items: get-appxpackage *'{{ item }}'* | remove-appxpackage
+  - 3dbuilder
+  - alarms
+  tags: lab,apps

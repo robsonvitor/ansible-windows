@@ -1,0 +1,10 @@
+- name: Criar diretório C:\Temp
+  win_file:
+    path: '{{ item }}'
+    state: directory
+  with_items:
+  - C:\Temp
+  - C:\Softwares
+  - C:\Windows\System32\nti
+  - C:\Windows\Sun\Java\Deployment\
+  tags: lab,diretorios

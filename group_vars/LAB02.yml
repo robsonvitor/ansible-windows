@@ -1,0 +1,15 @@
+---
+# Configuracao ansible
+ansible_python_interpreter: "/usr/bin/env python3"
+ansible_connection: winrm
+ansible_port: 5985
+ansible_winrm_transport: ntlm
+ansible_winrm_server_cert_validation: ignore
+
+# Variaveis especificas
+senha_vnc: "SENHA_DO_VNC"
+ocs_tag: LAB02
+dominio: "MEUDOMINIO"
+unidadeOrganizacional: "OU=LAB02,OU=Equipamentos,OU=MEUDOMINIO"
+senha_usuario_suporte: "SENHA_USUARIO_SUPORTE_AQUI"
+papel_parede: "SEU_ARQUIVO.jpg"

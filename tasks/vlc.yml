@@ -1,0 +1,15 @@
+# Verificar se esta instalado
+- name: Verificando se VLC Media Player esta instalado
+  win_reg_stat:
+    path: HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\VLC media player
+  register: vlc_instalado
+  tags: lab,vlc
+
+- name: Instalar VLC Media Player
+  win_package:
+    path: "{{ url_http_softwares }}/vlc-3.0.6-win32.exe"
+    product_id: 'VLC media player'
+    arguments: /L="1046" /S
+    state: present
+  when: (vlc_instalado.exists == False) or (FORCE is defined) or (vlc_instalado.properties.DisplayVersion.value != "3.06")
+  tags: lab,vlc

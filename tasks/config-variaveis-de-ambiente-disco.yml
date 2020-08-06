@@ -1,0 +1,10 @@
+- name: Variaveis de ambiente
+  win_environment:
+    state: present
+    name: '{{ item.variavel }}'
+    value: '{{ item.valor }}'
+    level: machine
+  with_items:
+  - { variavel: HOMEDRIVE, valor: "Z:\\" }
+  - { variavel: HOMEPATH, valor: "\\" }
+  tags: segundo_disco

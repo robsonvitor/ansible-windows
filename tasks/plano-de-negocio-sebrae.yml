@@ -1,0 +1,25 @@
+- name: Habilitar NetFramework 3.5
+  win_optional_feature:
+    name: NetFx3
+    state: present
+  become: yes
+  become_method: runas
+  become_user: System
+  tags: lab,plano_negocio
+
+- name: Verificando se Plano de Negocio 3.0 esta instalado
+  win_reg_stat:
+    path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{2BFE5B65-10C1-4F6A-A961-3F3C8C9E45FF}
+  register: plano_negocio
+  tags: lab,plano_negocio
+
+- name: Instalar Software Plano de Negocio 3.0
+  win_package:
+    path: '{{ srv_suporte_softwares }}/Plano_Negocio_3.msi'
+    product_id: '{D233EC4A-EF4B-4CCA-AE37-7994A3E1A483}'
+    arguments: /quiet
+    state: present
+  when: not plano_negocio.exists
+  register: plano_negocio_instalado
+  ignore_errors: yes
+  tags: lab,plano_negocio

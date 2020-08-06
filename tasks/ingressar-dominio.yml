@@ -1,0 +1,40 @@
+- name: Alterando hostname
+  win_hostname:
+    name: "{{ nome_host }}"
+  register: res
+  tags: ingressar_dominio
+
+- name: Reiniciar
+  win_reboot:
+  when: res.reboot_required
+  tags: ingressar_dominio
+
+- name: Ingressar no dominio
+  win_domain_membership:
+    dns_domain_name: TCO
+    hostname: "{{ nome_host }}"
+    domain_admin_user: "{{ usuario_admin_dominio }}"
+    domain_admin_password: "{{ senha_admin_dominio }}"
+    domain_ou_path: "{{ unidadeOrganizacional }}"
+    state: domain
+  register: domain_state
+  tags: ingressar_dominio
+
+- win_reboot:
+  when: domain_state.reboot_required
+  tags: ingressar_dominio
+
+
+- name: Remover do dominio
+  win_domain_membership:
+    workgroup_name: GRUPODETRABALHO
+    hostname: "{{ nome_host }}"
+    domain_admin_user: "{{ usuario_admin_dominio }}"
+    domain_admin_password: "{{ senha_admin_dominio }}"
+    state: workgroup
+  register: domain_state_remove
+  tags: remover_dominio
+
+- win_reboot:
+  when: domain_state_remove.reboot_required
+  tags: remover_dominio

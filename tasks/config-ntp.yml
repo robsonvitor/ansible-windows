@@ -1,0 +1,79 @@
+- name: Configura horario
+  block:
+    - name: Cria chave Bias no registro do windows
+      win_regedit:
+        path: HKLM:\SYSTEM\CurrentControlSet\Control\TimeZoneInformation\
+        name: Bias
+        data: 180
+        type: dword
+
+    - name: Cria chave DaylightBias no registro do windows
+      win_regedit:
+        path: HKLM:\SYSTEM\CurrentControlSet\Control\TimeZoneInformation\
+        name: DaylightBias
+        data: 0
+        type: dword
+
+    - name: Cria chave DaylightName no registro do windows
+      win_regedit:
+        path: HKLM:\SYSTEM\CurrentControlSet\Control\TimeZoneInformation\
+        name: DaylightName
+        data: "@tzres.dll,-42"
+        type: string
+
+    - name: Cria chave DaylightStart no registro do windows
+      win_regedit:
+        path: HKLM:\SYSTEM\CurrentControlSet\Control\TimeZoneInformation\
+        name: DaylightStart
+        data: hex:00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+        type: binary
+
+    - name: Cria chave StandardBias no registro do windows
+      win_regedit:
+        path: HKLM:\SYSTEM\CurrentControlSet\Control\TimeZoneInformation\
+        name: StandardBias
+        data: 0
+        type: dword
+
+    - name: Cria chave StandardName no registro do windows
+      win_regedit:
+        path: HKLM:\SYSTEM\CurrentControlSet\Control\TimeZoneInformation\
+        name: StandardName
+        data: "@tzres.dll,-42"
+        type: string
+
+    - name: Cria chave StandardStart no registro do windows
+      win_regedit:
+        path: HKLM:\SYSTEM\CurrentControlSet\Control\TimeZoneInformation\
+        name: StandardStart
+        data: hex:00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+        type: binary
+
+    - name: Cria chave TimeZoneKeyName no registro do windows
+      win_regedit:
+        path: HKLM:\SYSTEM\CurrentControlSet\Control\TimeZoneInformation\
+        name: TimeZoneKeyName
+        data: "E. South America Standard Time"
+        type: string
+
+    - name: Cria chave DynamicDaylightTimeDisabled no registro do windows
+      win_regedit:
+        path: HKLM:\SYSTEM\CurrentControlSet\Control\TimeZoneInformation\
+        name: DynamicDaylightTimeDisabled
+        data: 1
+        type: dword
+
+    - name: Cria chave ActiveTimeBias no registro do windows
+      win_regedit:
+        path: HKLM:\SYSTEM\CurrentControlSet\Control\TimeZoneInformation\
+        name: ActiveTimeBias
+        data: 180
+        type: dword
+
+    - name: Cria chave DisableAutoDaylightTimeSet no registro do windows
+      win_regedit:
+        path: HKLM:\SYSTEM\CurrentControlSet\Control\TimeZoneInformation\
+        name: DisableAutoDaylightTimeSet
+        data: 1
+        type: dword
+  tags: lab,horario

@@ -1,0 +1,11 @@
+- name: Acrescentar hosts em C:\Windows\System32\drivers\etc\hosts
+  win_lineinfile:
+    backup: yes
+    path: C:\Windows\System32\drivers\etc\hosts
+    insertafter: EOF
+    line: '{{ item.ip }} {{ item.hostname }}'
+  with_items:
+  - { ip: 127.0.0.1, hostname: poki.com.br }
+  - { ip: 127.0.0.1, hostname: krunker.io }
+  ignore_errors: yes
+  tags: lab,update_hosts

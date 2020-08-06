@@ -1,0 +1,17 @@
+# Verificar se esta instalado
+- name: Verificando se Google Chrome esta instalado
+  win_reg_stat:
+    path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{50ADB1A8-7D22-3FA4-9F99-AD149455FE09}
+  register: chrome_instalado
+  tags: lab,chrome
+
+# - debug: msg="{{ chrome_instalado }}"
+#   tags: lab,chrome
+
+- name: Instalar Google Chrome
+  win_package:
+    path: '{{ url_http_softwares_softwares }}/GoogleChromeStandaloneEnterprise64.msi'
+    product_id: '{50ADB1A8-7D22-3FA4-9F99-AD149455FE09}'
+    state: present
+  when: not chrome_instalado.exists or chrome_instalado.properties.DisplayVersion.value|float < 77
+  tags: lab,chrome

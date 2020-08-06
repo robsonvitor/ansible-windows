@@ -1,0 +1,59 @@
+- name: Verificando se TightVNC esta instalado
+  win_reg_stat:
+    path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{B7458EC3-2AA0-4DB4-8FC4-FBB73CC44948}
+  register: vnc_instalado
+  tags: lab,vnc
+
+# - debug:
+#     var: vnc_instalado
+#   tags: lab,vnc,vnc_servico
+
+- name: Verificando se o serviço tvnserver existe
+  win_service:
+    name: tvnserver
+  when: vnc_instalado.exists == true
+  register: info_vnc
+  tags: lab,vnc
+
+# - debug:
+#     var: info_vnc
+#   tags: lab,vnc,vnc_servico
+
+- name: Parar serviço TightVNC
+  win_service:
+    name: tvnserver
+    state: stopped
+  ignore_errors: yes
+  when: info_vnc.exists == true and FORCE is defined
+  tags: lab,vnc
+
+- name: Remover TightVNC
+  win_package:
+    path: '{{ url_http_softwares }}/tightvnc-2.8.11-gpl-setup-64bit.msi'
+    product_id: '{B7458EC3-2AA0-4DB4-8FC4-FBB73CC44948}'
+    state: absent
+    arguments: "/quiet /norestart"
+  when: vnc_instalado.exists ==  true and FORCE is defined
+  ignore_errors: yes
+  tags: lab,vnc
+
+# Permitido acesso direto somente do computador 10.17.5.222, de todos outros, perguntar ao usuário se aceita
+- name: Instalação TightVNC
+  win_package:
+    path: '{{ url_http_softwares }}/tightvnc-2.8.11-gpl-setup-64bit.msi'
+    product_id: '{}'
+    state: present
+    arguments: '/quiet /norestart ADDLOCAL=Server VIEWER_ASSOCIATE_VNC_EXTENSION=1 SERVER_REGISTER_AS_SERVICE=1 SERVER_ADD_FIREWALL_EXCEPTION=1 VIEWER_ADD_FIREWALL_EXCEPTION=1 SERVER_ALLOW_SAS=1 SET_USEVNCAUTHENTICATION=1 VALUE_OF_USEVNCAUTHENTICATION=1 SET_PASSWORD=1 VALUE_OF_PASSWORD={{ senha_vnc }} SET_USECONTROLAUTHENTICATION=1 VALUE_OF_USECONTROLAUTHENTICATION=1 SET_CONTROLPASSWORD=1 VALUE_OF_CONTROLPASSWORD={{ senha_vnc }} SET_REMOVEWALLPAPER=1 VALUE_OF_REMOVEWALLPAPER=0 SET_DISCONNECTCLIENTS=1 VALUE_OF_DISCONNECTCLIENTS=1"'
+  when: vnc_instalado.exists == false or FORCE is defined
+  register: vnc_reinstalado
+  ignore_errors: yes
+  tags: lab,vnc
+
+- name: Iniciar serviço TightVNC
+  win_service:
+    name: tvnserver
+    start_mode: auto
+    state: started
+  when: vnc_reinstalado.changed == true
+  ignore_errors: yes
+  tags: lab,vnc

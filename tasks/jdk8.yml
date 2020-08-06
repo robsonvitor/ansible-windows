@@ -1,0 +1,15 @@
+- name: Verificando se JDK 8 esta instalado
+  win_reg_stat:
+    path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{64A3A4F4-B792-11D6-A78A-00B0D0180201}
+  register: jdk_instalado
+  tags: lab,jdk8
+
+- name: Instalar JDK 8
+  win_package:
+    path: "{{ url_http_softwares_softwares }}/jdk-8u201-windows-x64.exe"
+    product_id: '{64A3A4F4-B792-11D6-A78A-00B0D0180201}'
+    arguments: /s
+    state: present
+  ignore_errors: yes
+  when: not jdk_instalado.exists
+  tags: lab,jdk8

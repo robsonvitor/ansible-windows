@@ -1,0 +1,44 @@
+- name: Instalar Portugol Studio
+  win_package:
+    path: "{{ srv_suporte_softwares }}/portugol-studio-2.7.4-windows.exe"
+    product_id: '{}'
+    state: present
+    arguments: '--mode unattended'
+  tags: lab,portugol
+
+- name: Verificando se tem o icone do Portugol Studio o desktop 1
+  win_stat:
+    path: C:\\Users\Public\Desktop\Portugol Studio.lnk
+  register: portugol_icone1
+  tags: lab,portugol
+
+- name: Deleta icone no desktop
+  win_shortcut:
+    dest: C:\Users\Public\Desktop\Portugol Studio.lnk
+    state: absent
+  when: portugol_icone1.stat.exists
+  tags: lab,portugol
+
+- name: Verificando se tem o icone do Portugol Studio o desktop 2
+  win_stat:
+    path: C:\\Users\Public\Desktop\{Portugol Studio}.lnk
+  register: portugol_icone2
+  tags: lab,portugol
+
+- name: Deleta icone no desktop
+  win_shortcut:
+    dest: C:\Users\Public\Desktop\{Portugol Studio}.lnk
+    state: absent
+  when: portugol_icone2.stat.exists
+  tags: lab,portugol
+
+- name: Criar icone no desktop
+  win_shortcut:
+    src: C:\ProgramData\UNIVALI\Portugol Studio\aplicacao\portugol-studio.jar
+    # args: default
+    directory: C:\ProgramData\UNIVALI\Portugol Studio\aplicacao\
+    dest: C:\Users\Public\Desktop\Portugol-Studio.lnk
+    icon: C:\ProgramData\UNIVALI\Portugol Studio\aplicacao\icones\windows\portugol-studio.ico
+    state: present
+  # when: not portugol_icone.stat.exists
+  tags: lab,portugol

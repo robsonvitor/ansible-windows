@@ -1,0 +1,15 @@
+- name: Verificando se JRE 8 esta instalado
+  win_reg_stat:
+    path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{26A24AE4-039D-4CA4-87B4-2F64180201F0}
+  register: jvm_instalado
+  tags: lab,jre8
+
+- name: Instalar JRE 8
+  win_package:
+    path: "{{ url_http_softwares }}/jre-8u201-windows-x64.exe"
+    product_id: '{26A24AE4-039D-4CA4-87B4-2F64180201F0}'
+    arguments: /s
+    state: present
+  ignore_errors: yes
+  when: not jvm_instalado.exists
+  tags: lab,jre8

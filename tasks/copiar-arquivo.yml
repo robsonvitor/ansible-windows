@@ -1,0 +1,7 @@
+- name: Copiar arquivos para hosts remotos
+  win_copy:
+    src: /tmp/bibliotecas-arduino.zip
+    dest: C:\Temp\bibliotecas-arduino.zip
+  tags: copiar_arquivo
+
+  

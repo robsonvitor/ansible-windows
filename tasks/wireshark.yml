@@ -1,0 +1,8 @@
+# Instalar
+- name: Instalar Wireshark
+  win_package:
+    path: "{{ url_http_softwares }}/Wireshark-win64-3.0.3.exe"
+    product_id: '{}'
+    state: present
+    arguments: /NCRC /S /desktopicon=yes /quicklaunchicon=no
+  tags: lab,wireshark

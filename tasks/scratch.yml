@@ -1,0 +1,15 @@
+- name: Verificando se Scratch esta instalado
+  win_reg_stat:
+    path: HKLM:\SOFTWARE\Classes\Installer\Products\980A3E3296138E846AB703BBAEFA904B
+  register: scratch_instalado
+  tags: lab,scratch
+
+- name: Instalar Scratch
+  win_package:
+    path: "{{ srv_suporte_softwares }}/Scratch2_MSI.exe"
+    product_id: '{}'
+    arguments: /S /v /qn
+    state: present
+  ignore_errors: yes
+  when: not scratch_instalado.exists
+  tags: lab,scratch

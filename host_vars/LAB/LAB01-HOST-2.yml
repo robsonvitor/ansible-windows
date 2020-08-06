@@ -1,0 +1,3 @@
+---
+nome_host: LAB01-HOST-2
+ansible_host: IP_HOST_AQUI

@@ -1,0 +1,17 @@
+- name: Verificando se Nextcloud esta instalado
+  win_reg_stat:
+    path: HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Nextcloud
+  register: nextcloud_instalado
+  tags: labnextcloud
+
+# - debug: msg="{{ nextcloud_instalado }}"
+#   tags: nextcloud
+
+- name: Instalar Nextcloud
+  win_package:
+    path: "{{ url_http_softwares }}/Nextcloud-2.6.1-setup.exe"
+    product_id: '{}'
+    arguments: /S
+    state: present
+  when: nextcloud_instalado.exists == false
+  tags: labnextcloud

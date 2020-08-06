@@ -1,0 +1,9 @@
+- name: Instalar MySQL-WorkBench
+  win_package:
+    path: '{{ url_http_softwares }}/mysql-workbench-community-8.0.12-winx64.msi'
+    product_id: '{}'
+    # product_id: '{3D4D54C3-6D4E-435F-8894-2125D900822C}'
+    arguments: /quiet
+    state: present
+  ignore_errors: yes
+  tags: lab,mysql_workbench
